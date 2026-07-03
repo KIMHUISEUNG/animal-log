@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/src/assets/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animal Log</title>
+
+    <meta property="og:title" content="Animal Log" />
+    <meta property="og:description" content="Animal Log SNS 서비스" />
+    <meta property="og:image" content="/src/assets/thumbnail.png" />
+
+    <script>
+      try {
+        const themeStore = localStorage.getItem("ThemeStore")
+          ? JSON.parse(localStorage.getItem("ThemeStore"))
+          : null;
+
+        const theme = themeStore.state.theme;
+
+        const htmlTag = document.documentElement;
+        htmlTag.classList.remove("dark", "light");
+
+        if (theme === "system") {
+          const isDarkTheme = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          htmlTag.classList.add(isDarkTheme ? "dark" : "light");
+        } else {
+          htmlTag.classList.add(theme);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
