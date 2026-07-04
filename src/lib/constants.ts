@@ -14,6 +14,11 @@ export const QUERY_KEYS = {
     all: ["comment"],
     post: (postId: number) => ["comment", "post", postId],
   },
+  notification: {
+    all: ["notification"],
+    list: (userId: string) => ["notification", "list", userId],
+    unreadCount: (userId: string) => ["notification", "unreadCount", userId],
+  },
 };
 
 export const BUCKET_NAME = "uploads";

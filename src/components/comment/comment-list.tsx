@@ -1,5 +1,6 @@
 import CommentItem from "@/components/comment/comment-item";
 import { useCommentsData } from "@/hooks/queries/use-comments-data";
+import { useCommentsRealtime } from "@/hooks/realtime/use-comments-realtime";
 import Fallback from "../fallback";
 import Loader from "../loader";
 import type { Comment, NestedComment } from "@/types";
@@ -32,6 +33,8 @@ function toNestedComments(comments: Comment[]): NestedComment[] {
 }
 
 export default function CommentList({ postId }: { postId: number }) {
+  useCommentsRealtime(postId);
+
   const {
     data: comments,
     error: fetchCommentsError,

@@ -102,6 +102,68 @@ export type Database = {
           },
         ]
       }
+      notification: {
+        Row: {
+          actor_id: string | null
+          comment_id: number | null
+          created_at: string
+          id: number
+          is_read: boolean
+          post_id: number | null
+          recipient_id: string
+          type: string
+        }
+        Insert: {
+          actor_id?: string | null
+          comment_id?: number | null
+          created_at?: string
+          id?: number
+          is_read?: boolean
+          post_id?: number | null
+          recipient_id: string
+          type: string
+        }
+        Update: {
+          actor_id?: string | null
+          comment_id?: number | null
+          created_at?: string
+          id?: number
+          is_read?: boolean
+          post_id?: number | null
+          recipient_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "post"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post: {
         Row: {
           author_id: string

@@ -1,9 +1,8 @@
 import { Link, Outlet } from "react-router";
 import logo from "@/assets/logo.png";
-import defaultAvatar from "@/assets/default-avatar.png";
-import { SunIcon } from "lucide-react";
 import ProfileButton from "./header/profile-button";
 import ThemeButton from "./header/theme-button";
+import NotificationButton from "./header/notification-button";
 
 export default function GlobalLayout() {
   return (
@@ -18,8 +17,9 @@ export default function GlobalLayout() {
             />
             <div className="font-bold">Animal Log</div>
           </Link>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2 sm:gap-5">
             <ThemeButton />
+            <NotificationButton />
             <ProfileButton />
           </div>
         </div>
