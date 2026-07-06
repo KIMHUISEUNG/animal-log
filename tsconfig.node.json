@@ -15,8 +15,8 @@
 
     /* Linting */
     "strict": true,
-    // "noUnusedLocals": true, <-- 실습을 위해 주석처리
-    // "noUnusedParameters": true, <-- 실습을 위해 주석처리
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true

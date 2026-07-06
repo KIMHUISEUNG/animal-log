@@ -17,13 +17,13 @@
 
     /* Linting */
     "strict": true,
-    // "noUnusedLocals": true, <-- 실습을 위해 주석처리
-    // "noUnusedParameters": true, <-- 실습을 위해 주석처리
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* 템플릿 코드에 추가된 부분 : Path Alias */
+    /* Path Alias */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
