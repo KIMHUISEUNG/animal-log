@@ -32,7 +32,7 @@ export default function ProfileEditorModal() {
       onSuccess: () => {
         close();
       },
-      onError: (error) => {
+      onError: () => {
         toast.error("프로필 수정에 실패했습니다", {
           position: "top-center",
         });

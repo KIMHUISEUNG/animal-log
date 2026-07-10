@@ -14,7 +14,7 @@ export default function LikePostButton({
 }) {
   const session = useSession();
   const { mutate: togglePostLike } = useTogglePostLike({
-    onError: (error) => {
+    onError: () => {
       toast.error("좋아요 요청에 실패했습니다", {
         position: "top-center",
       });

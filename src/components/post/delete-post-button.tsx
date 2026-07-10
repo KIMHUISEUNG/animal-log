@@ -14,7 +14,7 @@ export default function DeletePostButton({ id }: { id: number }) {
         navigate("/", { replace: true });
       }
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("포스트 삭제에 실패했습니다", {
         position: "top-center",
       });

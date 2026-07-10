@@ -24,7 +24,7 @@ export default function PostEditorModal() {
     onSuccess: () => {
       postEditorModal.actions.close();
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("포스트 생성에 실패했습니다", {
         position: "top-center",
       });
@@ -35,7 +35,7 @@ export default function PostEditorModal() {
     onSuccess: () => {
       postEditorModal.actions.close();
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("포스트 수정에 실패했습니다", {
         position: "top-center",
       });

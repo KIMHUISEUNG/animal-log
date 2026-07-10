@@ -12,14 +12,13 @@ import { useOpenAlertModal } from "@/store/alert-modal";
 export default function CommentItem(props: NestedComment) {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
-  const { mutate: deleteComment, isPending: isDeleteCommentPending } =
-    useDeleteComment({
-      onError: (error) => {
-        toast.error("댓글 삭제에 실패했습니다", {
-          position: "top-center",
-        });
-      },
-    });
+  const { mutate: deleteComment } = useDeleteComment({
+    onError: () => {
+      toast.error("댓글 삭제에 실패했습니다", {
+        position: "top-center",
+      });
+    },
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [isReply, setIsReply] = useState(false);
 

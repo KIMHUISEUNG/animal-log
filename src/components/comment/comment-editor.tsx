@@ -34,7 +34,7 @@ export default function CommentEditor(props: Props) {
         setContent("");
         if (props.type === "REPLY") props.onClose();
       },
-      onError: (error) => {
+      onError: () => {
         toast.error("댓글 추가에 실패했습니다.", {
           position: "top-center",
         });
@@ -46,7 +46,7 @@ export default function CommentEditor(props: Props) {
       onSuccess: () => {
         (props as EditMode).onClose();
       },
-      onError: (error) => {
+      onError: () => {
         toast.error("댓글 수정에 실패했습니다.", {
           position: "top-center",
         });
