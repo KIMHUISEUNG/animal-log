@@ -27,3 +27,4 @@ dist-ssr
 
 # Local backups created by the image migration script
 .image-migration-backups/
+.env
