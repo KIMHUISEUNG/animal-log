@@ -96,7 +96,7 @@ export default function ProfileEditorModal() {
                 onChange={handleSelectImage}
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp"
                 className="hidden"
               />
               <img

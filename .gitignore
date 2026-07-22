@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
-.env
+
+# Local backups created by the image migration script
+.image-migration-backups/

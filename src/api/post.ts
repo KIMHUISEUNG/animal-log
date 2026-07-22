@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
-import { uploadImage } from "./image";
+import { deleteImagesInPath, uploadImage } from "./image";
 import type { PostEntity } from "@/types";
+import { optimizeImage } from "@/lib/image-optimizer";
 
 export async function fetchPosts({
   from,
@@ -70,17 +71,22 @@ export async function createPostWithImages({
   images: File[];
   userId: string;
 }) {
-  //1. 새로운 포스트 생성
+  if (images.length === 0) return createPost(content);
+
+  const optimizedImages: File[] = [];
+  for (const image of images) {
+    optimizedImages.push(
+      await optimizeImage(image, { maxDimension: 1920, quality: 0.82 }),
+    );
+  }
+
+  // 이미지 변환 성공 후 포스트를 생성해 실패 시 빈 포스트가 남지 않게 한다.
   const post = await createPost(content);
-  if (images.length === 0) return post;
 
   try {
-    //2. 이미지 업로드
-    //이미지 업로드 병렬처리
     const imageUrls = await Promise.all(
-      images.map((image) => {
-        const fileExtension = image.name.split(".").pop() || "webp";
-        const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExtension}`;
+      optimizedImages.map((image) => {
+        const fileName = `${Date.now()}-${crypto.randomUUID()}.webp`;
         const filePath = `${userId}/${post.id}/${fileName}`;
 
         return uploadImage({
@@ -89,14 +95,17 @@ export async function createPostWithImages({
         });
       }),
     );
-    //3. 포스트 테이블 업데이트
+
     const updatedPost = await updatePost({
       id: post.id,
       image_urls: imageUrls,
     });
     return updatedPost;
   } catch (error) {
-    await deletePost(post.id);
+    await Promise.allSettled([
+      deleteImagesInPath(`${userId}/${post.id}`),
+      deletePost(post.id),
+    ]);
     throw error;
   }
 }

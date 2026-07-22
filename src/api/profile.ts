@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { getRandomNickname } from "@/lib/utils";
-import { deleteImagesInPath, uploadImage } from "./image";
+import { deleteImageByUrl, uploadImage } from "./image";
+import { optimizeImage } from "@/lib/image-optimizer";
 
 export async function fetchProfile(userId: string) {
   const { data, error } = await supabase
@@ -37,33 +38,47 @@ export async function updateProfile({
   bio?: string;
   avatarImageFile?: File;
 }) {
-  //1. 기존 아바타 이미지 삭제
+  const previousAvatarUrl = avatarImageFile
+    ? (await fetchProfile(userId)).avatar_url
+    : null;
+  let newAvatarImageUrl: string | undefined;
+
   if (avatarImageFile) {
-    await deleteImagesInPath(`${userId}/avatar`);
-  }
-  //2. 새로운 아바타 이미지 업로드
-  let newAvatarImageUrl;
-  if (avatarImageFile) {
-    const fileExtension = avatarImageFile.name.split(".").pop() || "webp";
-    const filePath = `${userId}/avatar/${new Date().getTime()}-${crypto.randomUUID()}.${fileExtension}`;
+    const optimizedAvatar = await optimizeImage(avatarImageFile, {
+      maxDimension: 512,
+      quality: 0.82,
+    });
+    const filePath = `${userId}/avatar/${Date.now()}-${crypto.randomUUID()}.webp`;
 
     newAvatarImageUrl = await uploadImage({
-      file: avatarImageFile,
+      file: optimizedAvatar,
       filePath,
     });
   }
-  //3. 프로필 테이블 업데이트
+
   const { data, error } = await supabase
     .from("profile")
     .update({
       nickname,
       bio,
-      avatar_url: newAvatarImageUrl,
+      ...(newAvatarImageUrl ? { avatar_url: newAvatarImageUrl } : {}),
     })
     .eq("id", userId)
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    if (newAvatarImageUrl) {
+      await deleteImageByUrl(newAvatarImageUrl).catch(() => undefined);
+    }
+    throw error;
+  }
+
+  if (previousAvatarUrl && previousAvatarUrl !== newAvatarImageUrl) {
+    await deleteImageByUrl(previousAvatarUrl).catch((deleteError) => {
+      console.error("기존 프로필 이미지 삭제에 실패했습니다.", deleteError);
+    });
+  }
+
   return data;
 }

@@ -10,7 +10,11 @@ export async function uploadImage({
 }) {
   const { data, error } = await supabase.storage
     .from(BUCKET_NAME)
-    .upload(filePath, file);
+    .upload(filePath, file, {
+      cacheControl: "31536000",
+      contentType: file.type,
+      upsert: false,
+    });
 
   if (error) throw error;
   const {
@@ -25,15 +29,34 @@ export async function deleteImagesInPath(path: string) {
     .from(BUCKET_NAME)
     .list(path);
 
-  if (!files || files.length === 0) {
-    return;
-  }
-
   if (fetchFilesError) throw fetchFilesError;
+  if (!files || files.length === 0) return;
 
   const { error: removeError } = await supabase.storage
     .from(BUCKET_NAME)
     .remove(files.map((file) => `${path}/${file.name}`));
 
   if (removeError) throw removeError;
+}
+
+export function getStoragePathFromPublicUrl(publicUrl: string) {
+  try {
+    const marker = `/storage/v1/object/public/${BUCKET_NAME}/`;
+    const pathname = new URL(publicUrl).pathname;
+    const markerIndex = pathname.indexOf(marker);
+
+    if (markerIndex === -1) return null;
+    return decodeURIComponent(pathname.slice(markerIndex + marker.length));
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteImageByUrl(publicUrl: string) {
+  const filePath = getStoragePathFromPublicUrl(publicUrl);
+  if (!filePath) return;
+
+  const { error } = await supabase.storage.from(BUCKET_NAME).remove([filePath]);
+
+  if (error) throw error;
 }
