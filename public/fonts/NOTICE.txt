@@ -1,0 +1,15 @@
+NanumBarunPen Font Notice
+
+Copyright (c) 2010, NAVER Corporation (https://www.navercorp.com/)
+with Reserved Font Name NanumBarunPen.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The license is included in OFL.txt and is also available at:
+https://openfontlicense.org
+
+The WOFF2 files bundled with Animal Log were produced by lossless WOFF2
+compression of the upstream NanumBarunPen TTF files. The original font data
+and metadata were otherwise left unchanged.
+
+Upstream font information:
+https://hangeul.pstatic.net/font

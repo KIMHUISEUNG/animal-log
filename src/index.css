@@ -1,11 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "NanumBarunPen";
+  src: url("./assets/fonts/NanumBarunpen-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NanumBarunPen";
+  src: url("./assets/fonts/NanumBarunpen-Bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NanumBarunPen Fallback";
+  src:
+    local("Apple SD Gothic Neo"), local("Malgun Gothic"),
+    local("Noto Sans CJK KR"), local("Noto Sans KR");
+  ascent-override: 97%;
+  descent-override: 30.4%;
+  line-gap-override: 0%;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-pen: "NanumBarunPen", sans-serif;
-  --font-pen-bold: "NanumBarunPenBold", "NanumBarunPen", sans-serif;
+  --font-pen:
+    "NanumBarunPen", "NanumBarunPen Fallback", system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -118,19 +144,5 @@
   }
   body {
     @apply bg-background text-foreground font-pen;
-  }
-
-  b,
-  strong {
-    font-family: var(--font-pen-bold);
-    font-weight: 400;
-  }
-}
-
-@layer utilities {
-  .font-semibold,
-  .font-bold {
-    font-family: var(--font-pen-bold);
-    font-weight: 400;
   }
 }
